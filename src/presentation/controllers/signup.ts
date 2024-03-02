@@ -16,13 +16,14 @@ export class SignUpController implements Controller {
           return badRequest(new MissingParamError(field))
         }
       }
+      const { email, password, passwordConfirmation } = httpRequest.body
 
-      if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
+      if (password !== passwordConfirmation) {
         return badRequest(new InvalidParamError('passwordConfirmation'))
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const isValid = this.emailValidator.isValid(httpRequest.body.email)
+      const isValid = this.emailValidator.isValid(email)
       if (!isValid) {
         return badRequest(new InvalidParamError('email'))
       }
